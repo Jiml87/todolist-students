@@ -1,3 +1,13 @@
+const LOW_PRIORITY = "low";
+const MIDDLE_PRIORITY = "middle";
+const HIGH_PRIORITY = "high";
+/**
+ * data: [{
+ *  text: string,
+ *  id: string,
+ *  priority: 'low' | 'middle' | 'high',
+ * }]
+ */
 let state = {
   data: [],
   editedId: "",
@@ -24,25 +34,41 @@ function render() {
   listElement.innerHTML = data
     .map((item, index) => {
       const isEdit = editedId && item.id === editedId;
-      return `<li class="list-group-item d-flex justify-content-between">${++index}. 
-      ${
-        isEdit
-          ? `<input class="update-input form-control" value="${item.text}"/>`
-          : item.text
-      }
+      return `<li class="list-group-item d-flex justify-content-between align-items-center">
+      <div class="d-flex justify-content-start align-items-center ">
+        <div class="circle ${item.priority}"></div>
+        ${++index}. 
+        ${
+          isEdit
+            ? `<input class="update-input form-control" value="${item.text}"/>`
+            : item.text
+        }
+      </div>
       <div class="d-flex">
-      ${
-        isEdit
-          ? '<button type="button" class="btn btn-primary update-button ms-2" data-id="' +
-            item.id +
-            '">Update</button>'
-          : '<button type="button" class="btn btn-primary edit-button ms-2" data-id="' +
-            item.id +
-            '">Edit</button>'
-      }
-      <button type="button" class="btn btn-danger delete-button ms-2" data-id=${
+        <div class="btn-group ms-2" role="group" aria-label="Basic example">
+          <button type="button" class="btn btn-info set-priority" data-status="${LOW_PRIORITY}" data-id="${
         item.id
-      }>Delete</button>
+      }">Low</button>
+          <button type="button" class="btn btn-info set-priority" data-status="${MIDDLE_PRIORITY}" data-id="${
+        item.id
+      }">Middle</button>
+          <button type="button" class="btn btn-info set-priority" data-status="${HIGH_PRIORITY}" data-id="${
+        item.id
+      }">High</button>
+        </div>
+        ${
+          isEdit
+            ? '<button type="button" class="btn btn-primary update-button ms-2" data-id="' +
+              item.id +
+              '">Update</button>'
+            : '<button type="button" class="btn btn-primary edit-button ms-2" data-id="' +
+              item.id +
+              '">Edit</button>'
+        }
+        <button type="button" class="btn btn-danger delete-button ms-2" data-id=${
+          item.id
+        }>Delete</button>
+        
       </div>
       </li>`;
     })
@@ -55,6 +81,7 @@ function addTask() {
   state.data.push({
     id: Date.now().toString(),
     text: input.value,
+    priority: LOW_PRIORITY,
   });
 
   setState({ ...state, data: state.data });
@@ -86,6 +113,15 @@ function updateTask(button) {
   setState({ ...state, editedId: "", data: newData });
 }
 
+function changePriority(button) {
+  const status = button.dataset.status;
+  const id = button.dataset.id;
+  const newData = state.data.map((item) => {
+    return item.id === id ? { ...item, priority: status } : item;
+  });
+  setState({ ...state, data: newData });
+}
+
 document.querySelector(".task-input").addEventListener("keypress", (event) => {
   if (event.keyCode === 13) {
     addTask();
@@ -111,6 +147,9 @@ document.addEventListener("click", (event) => {
 
   if (target.classList.contains("update-button")) {
     updateTask(target);
+  }
+  if (target.classList.contains("set-priority")) {
+    changePriority(target);
   }
 });
 

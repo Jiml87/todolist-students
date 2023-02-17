@@ -3,7 +3,7 @@ html {
 }
 
 .wrapper {
-  max-width: 700px;
+  max-width: 900px;
 }
 
 .priority {
@@ -40,4 +40,24 @@ html {
 .footer {
   display: flex;
   justify-content: flex-end;
+}
+
+.circle {
+  width: 16px;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+}
+
+.low {
+  background-color: #ffc107;
+}
+
+.middle {
+  background-color: #fd7e14;
+}
+
+.high {
+  background-color: #dc3545;
 }
