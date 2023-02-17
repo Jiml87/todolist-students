@@ -1,6 +1,17 @@
+const LOW_PRIORITY = "low";
+const MIDDLE_PRIORITY = "middle";
+const HIGH_PRIORITY = "high";
+/**
+ * data: [{
+ *  text: string,
+ *  id: string,
+ *  priority: 'low' | 'middle' | 'high',
+ * }]
+ */
 let state = {
   data: [],
   editedId: "",
+  removingItemId: null,
 };
 
 if (localStorage.getItem("data")) {
@@ -24,25 +35,41 @@ function render() {
   listElement.innerHTML = data
     .map((item, index) => {
       const isEdit = editedId && item.id === editedId;
-      return `<li class="list-group-item d-flex justify-content-between">${++index}. 
-      ${
-        isEdit
-          ? `<input class="update-input form-control" value="${item.text}"/>`
-          : item.text
-      }
+      return `<li class="list-group-item d-flex justify-content-between align-items-center">
+      <div class="d-flex justify-content-start align-items-center ">
+        <div class="circle ${item.priority}"></div>
+        ${++index}. 
+        ${
+          isEdit
+            ? `<input class="update-input form-control" value="${item.text}"/>`
+            : item.text
+        }
+      </div>
       <div class="d-flex">
-      ${
-        isEdit
-          ? '<button type="button" class="btn btn-primary update-button ms-2" data-id="' +
-            item.id +
-            '">Update</button>'
-          : '<button type="button" class="btn btn-primary edit-button ms-2" data-id="' +
-            item.id +
-            '">Edit</button>'
-      }
-      <button type="button" class="btn btn-danger delete-button ms-2" data-id=${
+        <div class="btn-group ms-2" role="group" aria-label="Basic example">
+          <button type="button" class="btn btn-info set-priority" data-status="${LOW_PRIORITY}" data-id="${
         item.id
-      }>Delete</button>
+      }">Low</button>
+          <button type="button" class="btn btn-info set-priority" data-status="${MIDDLE_PRIORITY}" data-id="${
+        item.id
+      }">Middle</button>
+          <button type="button" class="btn btn-info set-priority" data-status="${HIGH_PRIORITY}" data-id="${
+        item.id
+      }">High</button>
+        </div>
+        ${
+          isEdit
+            ? '<button type="button" class="btn btn-primary update-button ms-2" data-id="' +
+              item.id +
+              '">Update</button>'
+            : '<button type="button" class="btn btn-primary edit-button ms-2" data-id="' +
+              item.id +
+              '">Edit</button>'
+        }
+        <button type="button" class="btn btn-danger delete-button ms-2" data-id=${
+          item.id
+        }>Delete</button>
+        
       </div>
       </li>`;
     })
@@ -55,6 +82,7 @@ function addTask() {
   state.data.push({
     id: Date.now().toString(),
     text: input.value,
+    priority: LOW_PRIORITY,
   });
 
   setState({ ...state, data: state.data });
@@ -63,15 +91,25 @@ function addTask() {
 }
 
 function deleteTask(button) {
-  const buttonId = button.dataset.id;
   const newData = state.data.filter(({ id }) => {
-    return id !== buttonId;
+    return id !== state.removingItemId;
   });
 
-  setState({ ...state, data: newData });
+  document.querySelector(".removing").classList.remove("opened");
+  setState({ ...state, data: newData, removingItemId: null });
 }
 
-// refactor
+function showDeleteWindow(button) {
+  const buttonId = button.dataset.id;
+  setState({ ...state, removingItemId: buttonId });
+  document.querySelector(".removing").classList.add("opened");
+}
+
+function hideDeleteWindow() {
+  setState({ ...state, removingItemId: null });
+  document.querySelector(".removing").classList.remove("opened");
+}
+
 function editTask(button) {
   setState({ ...state, editedId: button.dataset.id });
 }
@@ -84,6 +122,15 @@ function updateTask(button) {
   });
 
   setState({ ...state, editedId: "", data: newData });
+}
+
+function changePriority(button) {
+  const status = button.dataset.status;
+  const id = button.dataset.id;
+  const newData = state.data.map((item) => {
+    return item.id === id ? { ...item, priority: status } : item;
+  });
+  setState({ ...state, data: newData });
 }
 
 document.querySelector(".task-input").addEventListener("keypress", (event) => {
@@ -103,7 +150,7 @@ document.querySelector(".task-button").addEventListener("click", () => {
 document.addEventListener("click", (event) => {
   const target = event.target;
   if (target.classList.contains("delete-button")) {
-    deleteTask(target);
+    showDeleteWindow(target);
   }
   if (target.classList.contains("edit-button")) {
     editTask(target);
@@ -112,22 +159,24 @@ document.addEventListener("click", (event) => {
   if (target.classList.contains("update-button")) {
     updateTask(target);
   }
+  if (target.classList.contains("set-priority")) {
+    changePriority(target);
+  }
+  if (target.classList.contains("close-wind")) {
+    hideDeleteWindow();
+  }
+  if (target.classList.contains("remove-wind-button")) {
+    deleteTask();
+  }
 });
 
 render();
-
-// console.dir(buttonElement);
-// console.dir(inputElement.value);
-
-/* Jan 31, 2023
-- SessionStorage, Cookie, LocalStorage
-
-DZ: Confirm popup:
-it will be removed
-YES NO
-
-
-
-
+/*
+DZ: Sorting
+A -> Z
+Z -> A
+Hight first
+Low First
+https://getbootstrap.com/docs/5.2/components/dropdowns/#overview
 
 */
