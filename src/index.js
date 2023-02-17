@@ -11,6 +11,7 @@ const HIGH_PRIORITY = "high";
 let state = {
   data: [],
   editedId: "",
+  removingItemId: null,
 };
 
 if (localStorage.getItem("data")) {
@@ -90,15 +91,25 @@ function addTask() {
 }
 
 function deleteTask(button) {
-  const buttonId = button.dataset.id;
   const newData = state.data.filter(({ id }) => {
-    return id !== buttonId;
+    return id !== state.removingItemId;
   });
 
-  setState({ ...state, data: newData });
+  document.querySelector(".removing").classList.remove("opened");
+  setState({ ...state, data: newData, removingItemId: null });
 }
 
-// refactor
+function showDeleteWindow(button) {
+  const buttonId = button.dataset.id;
+  setState({ ...state, removingItemId: buttonId });
+  document.querySelector(".removing").classList.add("opened");
+}
+
+function hideDeleteWindow() {
+  setState({ ...state, removingItemId: null });
+  document.querySelector(".removing").classList.remove("opened");
+}
+
 function editTask(button) {
   setState({ ...state, editedId: button.dataset.id });
 }
@@ -139,7 +150,7 @@ document.querySelector(".task-button").addEventListener("click", () => {
 document.addEventListener("click", (event) => {
   const target = event.target;
   if (target.classList.contains("delete-button")) {
-    deleteTask(target);
+    showDeleteWindow(target);
   }
   if (target.classList.contains("edit-button")) {
     editTask(target);
@@ -151,22 +162,21 @@ document.addEventListener("click", (event) => {
   if (target.classList.contains("set-priority")) {
     changePriority(target);
   }
+  if (target.classList.contains("close-wind")) {
+    hideDeleteWindow();
+  }
+  if (target.classList.contains("remove-wind-button")) {
+    deleteTask();
+  }
 });
 
 render();
-
-// console.dir(buttonElement);
-// console.dir(inputElement.value);
-
-/* Jan 31, 2023
-- SessionStorage, Cookie, LocalStorage
-
-DZ: Confirm popup:
-it will be removed
-YES NO
-
-
-
-
+/*
+DZ: Sorting
+A -> Z
+Z -> A
+Hight first
+Low First
+https://getbootstrap.com/docs/5.2/components/dropdowns/#overview
 
 */

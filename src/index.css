@@ -6,10 +6,10 @@ html {
   max-width: 900px;
 }
 
-.priority {
+.removing {
   display: none;
   position: fixed;
-  background-color: bisque;
+  backdrop-filter: blur(5px);
   top: 0;
   left: 0;
   right: 0;
@@ -17,14 +17,14 @@ html {
   justify-content: center;
   align-items: center;
 }
-.priority.opened {
+.removing.opened {
   display: flex;
 }
 
 .wind {
   background-color: #ffffff;
-  width: 500px;
-  min-height: 300px;
+  width: 300px;
+  min-height: 250px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
