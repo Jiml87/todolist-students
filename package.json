@@ -4,7 +4,7 @@
   "description": "#### Install",
   "private": false,
   "scripts": {
-    "start": "npx webpack serve",
+    "start": "webpack serve",
     "api": "nodemon api/index.js"
   },
   "repository": {
