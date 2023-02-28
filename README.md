@@ -2,12 +2,16 @@
 
 #### Install
 
-`npm i http-server -g`
+`npm install`
 
-#### Run
+#### Run API server
 
-`http-server`
+`npm run api`
 
-#### Open
+#### Run UI dev server
 
-`http://localhost:8080`
+`npm run start`
+
+#### Open in browser
+
+`http://localhost:3002`

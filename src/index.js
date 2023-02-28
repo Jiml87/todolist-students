@@ -1,3 +1,8 @@
+import { sortAZ, sortZA } from "./utils";
+import * as api from "./api";
+
+import "./style.css";
+
 const LOW_PRIORITY = "low";
 const MIDDLE_PRIORITY = "middle";
 const HIGH_PRIORITY = "high";
@@ -14,9 +19,9 @@ let state = {
   removingItemId: null,
 };
 
-if (localStorage.getItem("data")) {
-  state.data = JSON.parse(localStorage.getItem("data"));
-}
+// if (localStorage.getItem("data")) {
+//   state.data = JSON.parse(localStorage.getItem("data"));
+// }
 
 if (sessionStorage.getItem("editedId")) {
   state.editedId = sessionStorage.getItem("editedId");
@@ -24,14 +29,14 @@ if (sessionStorage.getItem("editedId")) {
 
 function setState(newState) {
   state = newState;
-  localStorage.setItem("data", JSON.stringify(state.data));
+  // localStorage.setItem("data", JSON.stringify(state.data));
   sessionStorage.setItem("editedId", state.editedId);
   render();
 }
 
-const sortAZ = () => state.data.sort((a, b) => (a.text > b.text ? 1 : -1));
-
-const sortZA = () => state.data.sort((a, b) => (b.text > a.text ? 1 : -1));
+api.getTodoList().then((data) => {
+  setState({ ...state, data });
+});
 
 const sortingMethod = (target) => {
   if (target.innerText === "A-Z") {
@@ -157,6 +162,8 @@ function updateTask(button) {
   });
 
   setState({ ...state, editedId: "", data: newData });
+
+  api.editTodoItem(id, { text: value });
 }
 
 function changePriority(button) {
@@ -166,6 +173,8 @@ function changePriority(button) {
     return item.id === id ? { ...item, priority: status } : item;
   });
   setState({ ...state, data: newData });
+
+  api.editTodoItem(id, { priority: status });
 }
 
 document.querySelector(".task-input").addEventListener("keypress", (event) => {
@@ -216,5 +225,14 @@ Z -> A
 Hight first
 Low First
 https://getbootstrap.com/docs/5.2/components/dropdowns/#overview
+asdfasdfa
+
+
+https://developer.mozilla.org/ru/docs/Web/API/Fetch_API/Using_Fetch
+https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Promise
+DZ:
+Implement with api call:
+Delete item 
+Create item
 
 */
