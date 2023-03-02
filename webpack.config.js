@@ -22,9 +22,14 @@ module.exports = {
     },
     compress: true,
     port: 3002,
-    proxy: {
-      "/api": "http://localhost:3005",
-    },
+    proxy: [
+      {
+        context: ["/api/**"],
+        secure: false,
+        changeOrigin: true,
+        target: "http://localhost:3005",
+      },
+    ],
     open: true,
   },
 };
