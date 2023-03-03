@@ -22,8 +22,9 @@ app
   .route("/api/todolist/:id")
   .delete(function (req, res) {
     const { id } = req.params;
+    console.log({idIs: id});
     data = data.filter((item) => item.id !== id);
-    res.send("Item is removed");
+    res.send(`Item with id: ${id} is removed`);
   })
   .put(function (req, res) {
     const { id } = req.params;

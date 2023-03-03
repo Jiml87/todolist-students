@@ -10,6 +10,24 @@ export const getTodoList = () => {
     });
 };
 
+export const createTodoItem = (id, data) => {
+  return fetch(`http://localhost:3002/api/todolist/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => {
+      const res = response.json();
+      return res;
+    })
+    .catch((error) => {
+      console.error(error);
+      return error;
+    });
+};
+
 export const editTodoItem = (id, data) => {
   return fetch(`http://localhost:3002/api/todolist/${id}`, {
     method: "PUT",
@@ -17,6 +35,20 @@ export const editTodoItem = (id, data) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
+  })
+    .then((response) => {
+      const res = response.json();
+      return res;
+    })
+    .catch((error) => {
+      console.error(error);
+      return error;
+    });
+};
+
+export const deleteTodoItem = (id) => {
+  return fetch(`http://localhost:3002/api/todolist/${id}`, {
+    method: "DELETE",
   })
     .then((response) => {
       const res = response.json();
