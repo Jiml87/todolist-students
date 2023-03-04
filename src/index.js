@@ -119,15 +119,19 @@ function render() {
 function addTask() {
   const input = document.querySelector(".task-input");
 
-  state.data.push({
+  const newData = {
     id: Date.now().toString(),
     text: input.value,
     priority: LOW_PRIORITY,
-  });
+  }
+
+  state.data.push(newData);
 
   setState({ ...state, data: state.data });
 
   input.value = "";
+
+  api.createTodoItem(newData.id, newData);
 }
 
 function deleteTask(button) {
@@ -136,6 +140,7 @@ function deleteTask(button) {
   });
 
   document.querySelector(".removing").classList.remove("opened");
+  api.deleteTodoItem(state.removingItemId);
   setState({ ...state, data: newData, removingItemId: null });
 }
 
