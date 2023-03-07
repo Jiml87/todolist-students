@@ -34,9 +34,14 @@ function setState(newState) {
   render();
 }
 
-api.getTodoList().then((data) => {
-  setState({ ...state, data });
-});
+api
+  .getTodoList()
+  .then((data) => {
+    setState({ ...state, data });
+  })
+  .catch((error) => {
+    console.log(error);
+  });
 
 const sortingMethod = (target) => {
   if (target.innerText === "A-Z") {
