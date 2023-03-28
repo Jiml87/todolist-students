@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build"
+    "build": "react-scripts build",
+    "format": "prettier --write ./src"
   },
   "eslintConfig": {
     "extends": [
@@ -36,6 +37,7 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
-    "prettier": "^2.8.6"
+    "prettier": "^2.8.7",
+    "prettier-cli": "^0.1.0"
   }
 }
