@@ -2,53 +2,35 @@ import React from 'react';
 
 import Counter from './components/Counter/Counter';
 import './App.scss';
+import SearchBar from './components/SearchBar/SearchBar';
+import ListItem from './components/ListItem/ListItem';
+import { LOW_PRIORITY } from './constants';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { items: [], text: '' };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  state = { items: [], text: '', removingItemId: null };
+
+  addTask({ value, name }) {
+    this.state.data.push({
+      id: Date.now().toString(),
+      text: value,
+      priority: LOW_PRIORITY,
+    });
+
+    this.setState({ ...this.state, data: this.state.data });
   }
 
   render() {
+    const { items } = this.state;
     console.log('render App');
     return (
       <div id='app' class='pt-4'>
+        <SearchBar addTask={this.addTask} />
+        <ListItem items={items} />
         <div class='wrapper'>
-          <div class='container'>
-            <div class='row'>
-              <div class='col-9'>
-                <input
-                  onChange={this.handleChange}
-                  value={this.state.text}
-                  type='text'
-                  class='g-col-11 task-input form-control'
-                />
-                <button class='sort' type='button'>
-                  A-Z
-                </button>
-              </div>
-              <div class='col-3'>
-                <button class='g-col-1 task-button btn btn-success'>
-                  Add Task
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class='container text-center mt-2 ml-2'>
-            <div class='row'>
-              <div class='order-first first-low mt-2'>
-                <ul id='list-low' class='list-group pt-3 pb-3 mt-1'></ul>
-              </div>
-              <div class='second-medium mt-2'>
-                <ul id='list-medium' class='list-group pt-3 pb-3 mt-1'></ul>
-              </div>
-              <div class='order-last third-high mt-2'>
-                <ul id='list-high' class='list-group pt-3 pb-3 mt-1'></ul>
-              </div>
-            </div>
-          </div>
           <div class='removing'>
             <div class='wind shadow mb-5 bg-body rounded'>
               <div class='body h5'>It will be removed</div>
@@ -75,7 +57,6 @@ class App extends React.Component {
       // </div>
     );
   }
- 
 }
 // class Todolist extends React.Component {
 //   render() {
