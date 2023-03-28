@@ -6,25 +6,41 @@ import "./App.scss"
 class App extends React.Component {
   constructor(props) {
     super(props)
-    this.a = "Hello"
-    // this.state = {
-    //   title: "Hello world",
-    // };
+    this.state = {
+      isCounter: true,
+    }
+  }
+
+  onToggle = () => {
+    this.setState({ isCounter: !this.state.isCounter })
   }
 
   render() {
-    console.log("render App")
+    // console.log("render App")
     return (
       <div className="App">
-        <Counter
-          title="Height"
-          buttonName="Increase height"
-        />
-        <hr />
-        <Counter
-          title="Width"
-          buttonName="Increase width"
-        />
+        <div>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={this.onToggle}
+          >
+            Toggle counter
+          </button>
+        </div>
+        {this.state.isCounter && (
+          <>
+            <Counter
+              title="Height"
+              buttonName="Increase height"
+            />
+            <hr />
+            <Counter
+              title="Width"
+              buttonName="Increase width"
+            />
+          </>
+        )}
       </div>
     )
   }
