@@ -1,20 +1,20 @@
-import React from "react";
+import React from "react"
 
-import "./Counter.scss";
+import "./Counter.scss"
 
 class Counter extends React.Component {
   state = {
     counter: 0,
-  };
+  }
 
   onIncreaseCounter = () => {
     this.setState({
       counter: this.state.counter + 1,
-    });
-  };
+    })
+  }
 
   render() {
-    console.log("render " + this.props.title);
+    console.log("render " + this.props.title)
     return (
       <div>
         <h1>
@@ -30,8 +30,8 @@ class Counter extends React.Component {
           </button>
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default Counter;
+export default Counter

@@ -1,26 +1,32 @@
-import React from "react";
+import React from "react"
 
-import Counter from "./components/Counter/Counter";
-import "./App.scss";
+import Counter from "./components/Counter/Counter"
+import "./App.scss"
 
 class App extends React.Component {
   constructor(props) {
-    super(props);
-    this.a = "Hello";
+    super(props)
+    this.a = "Hello"
     // this.state = {
     //   title: "Hello world",
     // };
   }
 
   render() {
-    console.log("render App");
+    console.log("render App")
     return (
       <div className="App">
-        <Counter title="Height" buttonName="Increase height" />
+        <Counter
+          title="Height"
+          buttonName="Increase height"
+        />
         <hr />
-        <Counter title="Width" buttonName="Increase width" />
+        <Counter
+          title="Width"
+          buttonName="Increase width"
+        />
       </div>
-    );
+    )
   }
 }
 
@@ -29,4 +35,4 @@ class App extends React.Component {
 // 3 types of tasks by priority
 // * Make Task item as separated component
 
-export default App;
+export default App
