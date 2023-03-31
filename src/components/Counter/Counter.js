@@ -39,6 +39,9 @@ class Counter extends React.Component {
   }
 
   render() {
+    console.log('==============state===============');
+    console.log({state: this.state});
+    console.log('====================================');
     // console.log("render " + this.props.title)
     return (
       <div>
