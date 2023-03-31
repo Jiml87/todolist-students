@@ -3,23 +3,44 @@ import React from "react"
 import Counter from "./components/Counter/Counter"
 import "./App.scss"
 
+import CreateTask from './components/CreateTask/CreateTask';
+import ItemTask from './components/ItemTask/ItemTask';
+import { LOW_PRIORITY } from './constants';
+
 class App extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      isCounter: true,
-    }
+  state = {
+    isCounter: true,
+    items: [], 
+    text: '', 
+    removingItemId: null
   }
 
   onToggle = () => {
     this.setState({ isCounter: !this.state.isCounter })
   }
 
+  addTask = ({ value, name }) => {
+    let newTask = {
+      id: Date.now().toString(),
+      text: value,
+      priority: LOW_PRIORITY,
+    };
+    console.log('%c So Important 🧠 AnnulusConfigurationTable', 'color: #b198fb; font-weight: bold; background: #8e238a;');
+    console.log({state: this.state});
+    this.setState({ 
+      ...this.state,
+      items: [...this.state.items, newTask]
+    });
+  }
+
   render() {
-    // console.log("render App")
+    const {items} = this.state;
+    
     return (
       <div className="App">
-        <div>
+        <CreateTask addTask={this.addTask} />
+        <ItemTask items={items} />
+        {/* <div>
           <button
             type="button"
             className="btn btn-primary"
@@ -40,7 +61,7 @@ class App extends React.Component {
               buttonName="Increase width"
             />
           </>
-        )}
+        )} */}
       </div>
     )
   }
